@@ -1,0 +1,76 @@
+show databases;
+
+create database test;
+
+show tables from test;
+
+drop database vit;
+
+create table mech(
+id int, 
+name varchar(40),
+reg_number int,
+mark int
+);
+
+create table it(
+id int,
+name varchar(40),
+mark int
+);
+
+use test;
+
+select * from mech;
+
+
+insert into cse (id,name, reg_number,mark)
+values 
+(101, 'Vishal', 17423907, 96),
+  (102, 'Nirmala', 17423908, 89),
+  (103, 'Arjun', 17423909, 78),
+  (104, 'Meera', 17423910, 91),
+  (105, 'Raj', 17423911, 84),
+  (106, 'Sneha', 17423912, 87),
+  (107, 'Anil', 17423913, 73),
+  (108, 'Divya', 17423914, 95),
+  (109, 'Karan', 17423915, 88),
+  (110, 'Pooja', 17423916, 90);
+  
+  
+insert into it (id, name, reg_number, mark)
+values
+  (201, 'Aarav',    17423917, 85),
+  (202, 'Tanvi',    17423918, 92),
+  (203, 'Ishaan',   17423919, 77),
+  (204, 'Kriti',    17423920, 89),
+  (205, 'Rohan',    17423921, 74),
+  (206, 'Simran',   17423922, 91),
+  (207, 'Yash',     17423923, 88),
+  (208, 'Ananya',   17423924, 95),
+  (209, 'Kabir',    17423925, 79),
+  (210, 'Priya',    17423926, 87);
+  
+  insert into mech (id, name, reg_number, mark)
+  values
+    (301, 'Rahul',    17423927, 90),
+  (302, 'Neha',     17423928, 86),
+  (303, 'Dev',      17423929, 82),
+  (304, 'Snehal',   17423930, 93),
+  (305, 'Kunal',    17423931, 76),
+  (306, 'Lavanya',  17423932, 88),
+  (307, 'Ayaan',    17423933, 84),
+  (308, 'Riya',     17423934, 90),
+  (309, 'Harsh',    17423935, 80),
+  (310, 'Mira',     17423936, 91);
+  
+alter table cse add(mobile int2);
+alter table cse drop column address;
+
+
+alter table cse add(country varchar(20) default "India");
+select * from cse;
+
+update cse set mark=55 where id=105;
+update cse set mark=mark+1;
+
