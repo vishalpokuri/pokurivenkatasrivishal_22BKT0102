@@ -1,0 +1,61 @@
+create database tuesday;
+drop database tuesday;
+use tuesday;
+drop table category; 
+
+create table category(
+c_id int primary key, 
+c_name varchar(25),
+c_details text
+);
+
+drop table products;
+create table products(
+p_id int primary key, 
+p_name varchar(25),
+p_details text,
+c_id int,
+foreign key products(c_id) references category(c_id) on update cascade
+);
+
+desc products;
+insert into products values 
+(501, "Samsung S23", "12gb+256", 101),
+(502, "Kurta set", "A nice kurta", 102);
+
+
+select * from products;
+
+insert into category values 
+(101, "Electronics", "Some random description for electronics"),
+(102, "Clothes", "Some random description for clothes");
+
+select * from category;
+
+delete from category where c_id=101;
+
+update category set c_id=111 where c_id=101;
+
+alter table category drop primary key;
+
+create table Orders(
+first_name varchar(25),
+last_name varchar(25),
+address text,
+product_id int);
+
+select * from orders;
+alter table orders add foreign key orders(product_id) references Products(p_id);
+insert into orders values
+('Vishal', "Pokuri", 'A random address', 501),
+('Vishal', "Pokuri", 'A random address', 502);
+desc orders;
+
+alter table orders drop foreign key product_id;
+
+
+
+
+
+
+
