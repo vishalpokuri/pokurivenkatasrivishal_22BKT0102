@@ -1,0 +1,90 @@
+use vit;
+show tables from vit;
+drop view admin_team;
+
+select * from worker;
+
+# check people from each department
+select department, count(department) as count_dept from worker 
+group by department
+order by count_dept desc
+limit 1;
+
+select department, sum(salary) as salary_agg from worker
+group by department
+order by salary_agg
+limit 1;
+
+#2nd largest
+select department, sum(salary) as salary_agg from worker
+group by department
+order by salary_agg
+limit 1 offset 1;
+
+
+#having
+select department, count(department) as count_dept 
+from worker
+group by department
+having avg(salary)>100000;
+
+SELECT department, COUNT(department) AS count_dept
+FROM worker
+WHERE salary < 200000
+GROUP BY department;
+
+#subquery
+select first_name, department, salary from worker where salary =(select max(salary) from worker);
+
+select first_name, last_name, department, salary from worker
+where department = (select department group by department having avg(salary)>300000); 
+
+select * from worker 
+where department = (select department from worker group by department order by sum(salary) limit 1);
+
+select department from worker group by department order by sum(salary) limit 1;
+
+#joins
+create table student(
+id int,
+name varchar(25));
+
+insert into student (id, name) values
+(101, 'jayanth'),
+(102, 'karthik'),
+(103, 'praveen'),
+(104, 'manoj');
+
+create table address(
+id int,
+address text);
+
+insert into address (id, address) values
+(201, 'some random 101 address'),
+(202, 'some random 102 address'),
+(203, 'some random 103 address'),
+(204, 'some random 104 address');
+
+select * from address;
+select * from student;
+use vit;
+#types of joins
+#cross join (m*n)
+select * from 
+address cross join student;
+
+update address set id=105 where id=104;
+
+#inner join (intersection)
+select * from 
+address inner join student where student.id = address.id;
+
+#left outer join 
+select * from student left outer join address on (student.id = address.id);
+
+#right outer join 
+select * from student right  outer join address on (student.id = address.id);
+
+select * from student full join address;
+
+
