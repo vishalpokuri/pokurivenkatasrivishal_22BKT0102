@@ -22,7 +22,7 @@ public class Ops {
     }
 }
 
-package app.mongo; // Generic package name
+package connection;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -41,7 +41,7 @@ public class Ops{
             MongoCollection<Document> coll = db.getCollection("products"); 
 
             AggregateIterable<Document> results = coll.aggregate(Arrays.asList(
-                new Document("$match", new Document("value_field", new Document("$ne", null))), // Generic field name
+                new Document("$match", new Document("value_field", new Document("$ne", null))), 
                 new Document("$group", new Document("_id", null)
                     .append("sum_total", new Document("$sum", "$value_field"))
                     .append("record_count", new Document("$sum", 1))) 
