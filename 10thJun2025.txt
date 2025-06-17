@@ -1,0 +1,127 @@
+#delete one operation
+
+package connection;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.DeleteResult; // Ensure this import is present
+import org.bson.Document;
+
+public class MongoDB {
+
+    public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operators");
+        MongoCollection<Document> collection = database.getCollection("users");
+
+        System.out.println("Attempting to delete document with name 'john'...");
+        DeleteResult result = collection.deleteOne(Filters.eq("name", "john"));
+
+        if (result.getDeletedCount() > 0) {
+            System.out.println("Document(s) deleted successfully! Count: " + result.getDeletedCount());
+        } else {
+            System.out.println("No documents matched the deletion criteria. Deleted count: " + result.getDeletedCount());
+        }
+
+        System.out.println("*****Documents After Deletion Attempt******");
+        // Print all remaining documents
+        for (Document document : collection.find()) {
+            System.out.println(document);
+        }
+        
+        mongoClient.close(); // Important to close the client
+    }
+}
+
+
+#delete many operations
+
+package connection;
+import org.bson.Document;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.FindIterable;
+public class Delete {
+	
+	public static void main(String[] args)
+	{
+		MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+	    MongoDatabase database = mongoClient.getDatabase("operators");
+	    MongoCollection<Document> collection = database.getCollection("sales");
+	    
+	    collection.deleteMany(Filters.eq("item","Cappuccino"));
+	    System.out.println("Docment Deleted");
+	    System.out.println("**Documents***");
+	    
+	    FindIterable<Document> documents = collection.find().limit(2);
+	    for(Document document : documents)
+	    {
+	    	System.out.println(document);
+	    }
+	}
+
+}
+
+#
+package connection;
+
+import org.bson.Document;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.FindIterable;
+import org.bson.conversions.Bson;
+import static com.mongodb.client.model.Sorts.descending;
+
+public class Sorting {
+    public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("myDb");
+        MongoCollection<Document> collection = database.getCollection("sampleCollection");
+        Bson sort = descending("First_Name");
+        FindIterable<Document> documents = collection.find().sort(sort);
+        for (Document document : documents) {
+            System.out.println(document);
+        }
+        mongoClient.close();
+    }
+}
+
+
+package connection;
+import org.bson.Document;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+import com.mongodb.client.model.Filters;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
+public class Sorting {
+	
+	public static void main(String[] args)
+	{
+		MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+	    MongoDatabase database = mongoClient.getDatabase("myDb");
+	    MongoCollection<Document> collection = database.getCollection("sampleCollection");
+	    
+	    
+	    FindIterable<Document> documents = collection.find().sort(new BasicDBObject("First_Name", 1));;
+	    for(Document document : documents)
+	    {
+	    	System.out.println(document);
+	    }
+	}
+
+}
+
+
