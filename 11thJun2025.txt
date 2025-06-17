@@ -1,0 +1,93 @@
+package connection ;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.FindIterable;
+import org.bson.Document;
+import static com.mongodb.client.model.Filters.*;
+import com.mongodb.Block;
+
+public class Ops {
+    public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operations");
+        MongoCollection<Document> collection = database.getCollection("products");
+
+        FindIterable<Document> result = collection.find(and(gt("price", 700), lt("price", 900)));
+
+        for (Document doc : result) {
+            System.out.println(doc);
+        }
+    }
+}
+
+package app.mongo; // Generic package name
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.AggregateIterable;
+import org.bson.Document;
+import java.util.Arrays;
+
+public class Ops{ 
+
+    public static void main(String[] args) {
+        MongoClient client = null; 
+            client = MongoClients.create("mongodb://localhost:27017");
+            MongoDatabase db = client.getDatabase("operations"); 
+            MongoCollection<Document> coll = db.getCollection("products"); 
+
+            AggregateIterable<Document> results = coll.aggregate(Arrays.asList(
+                new Document("$match", new Document("value_field", new Document("$ne", null))), // Generic field name
+                new Document("$group", new Document("_id", null)
+                    .append("sum_total", new Document("$sum", "$value_field"))
+                    .append("record_count", new Document("$sum", 1))) 
+            ));
+
+            for (Document doc : results) {
+                System.out.println("Sum Result: " + doc.getInteger("sum_total")); 
+                System.out.println("Record Count: " + doc.getInteger("record_count")); 
+                System.out.println("---");
+            }
+                }
+    }
+}
+
+#average price calculation
+
+package connection ;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.FindIterable;
+import org.bson.Document;
+import static com.mongodb.client.model.Filters.*;
+import com.mongodb.Block;
+
+public class Ops {
+
+    public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("operations");
+        MongoCollection<Document> collection = database.getCollection("products");
+
+        int totalPrice = 0;
+        int count = 0 ;
+
+        for (Document doc : collection.find()) {
+            Integer price = doc.getInteger("price");
+            if (price != null) {
+                totalPrice += price;
+                count ++ ;
+            }
+        }
+
+        System.out.println("Average Price: " + totalPrice/count);
+    }
+}
+
+
